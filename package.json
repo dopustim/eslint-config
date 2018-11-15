@@ -1,0 +1,32 @@
+{
+    "name": "@dopustim/eslint-config",
+    "version": "0.1.0",
+    "description": "Configuration file for ESLint",
+    "keywords": [
+        "configuration",
+        "config",
+        "json",
+        "validate",
+        "lint",
+        "linter",
+        "eslint"
+    ],
+    "author": "DopustimVladimir",
+    "license": "ISC",
+    "repository": "https://github.com/dopustim/eslint-config",
+    "main": "index.js",
+    "scripts": {
+        "test": "jasmine spec/index-spec.js"
+    },
+    "devDependencies": {
+        "eslint": "^5.9.0",
+        "jasmine": "^3.3.0"
+    },
+    "eslintConfig": {
+        "extends": "./index.js",
+        "env": {
+            "node": true,
+            "jasmine": true
+        }
+    }
+}
