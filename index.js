@@ -1,15 +1,12 @@
-module.exports = {
+const possibleProblems = require("./rules/possible-problems.json")
+const suggestions = require("./rules/suggestions.json")
+const layoutAndFormatting = require("./rules/layout-and-formatting.json")
 
-    parserOptions: {
-        ecmaVersion: 2018,
-        sourceType: 'module'
-    },
-    extends: [
-        './rules/possible-errors.json',
-        './rules/best-practices.json',
-        './rules/variables.json',
-        './rules/nodejs.json',
-        './rules/stylistic-issues.json',
-        './rules/ecmascript-6.json'
-    ].map(require.resolve)
-};
+module.exports = {
+    extends: "eslint:recommended",
+    rules: {
+        ...possibleProblems,
+        ...suggestions,
+        ...layoutAndFormatting
+    }
+}

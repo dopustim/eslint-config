@@ -1,46 +1,81 @@
-const eslint = require('eslint');
-const config = require('../');
+const eslint = require("eslint")
+const config = require("../")
 
-const linter = new eslint.CLIEngine({
+const linter = new eslint.ESLint({
     useEslintrc: false,
-    baseConfig: config
-});
+    baseConfig: {
+        env: { browser: true, es2020: true },
+        parserOptions: { ecmaVersion: 2020 },
+        ...config
+    }
+})
 
-describe('Lint result for valid JS file', () => {
+describe("With rule \"array-callback-return\"", () => {
 
-    let res;
+    const validFiles = [ "./spec/fixtures/array-callback-return/valid.js" ]
+    const invalidFiles = [ "./spec/fixtures/array-callback-return/invalid.js" ]
 
-    beforeAll(() => {
-        res = linter.executeOnFiles(['./spec/valid.js']);
-    });
-    it('has no errors', () => {
-        expect(res.results[0].errorCount).toBeFalsy();
-    });
-    it('has no warnings', () => {
-        expect(res.results[0].warningCount).toBeFalsy();
-    });
-});
+    let res
 
-describe('Lint result for invalid JS file', () => {
+    describe("valid file", () => {
 
-    let res;
+        beforeAll(async () => {
+            res = await linter.lintFiles(validFiles)
+        })
+        it("has no errors", () => {
+            expect(res[0].errorCount).toBeFalsy()
+        })
+        it("has no warnings", () => {
+            expect(res[0].warningCount).toBeFalsy()
+        })
+    })
 
-    beforeAll(() => {
-        res = linter.executeOnFiles(['./spec/invalid.js']);
-    });
-    it('has errors', () => {
-        expect(res.results[0].errorCount).toBeTruthy();
-    });
-    it('has warning for rule "prefer-const"', () => {
-        expect(res.results[0].messages[0].ruleId).toBe('prefer-const');
-        expect(res.results[0].messages[0].severity).toBe(1);
-    });
-    it('has warning for rule "quotes"', () => {
-        expect(res.results[0].messages[1].ruleId).toBe('quotes');
-        expect(res.results[0].messages[1].severity).toBe(1);
-    });
-    it('has error for rule "semi"', () => {
-        expect(res.results[0].messages[2].ruleId).toBe('semi');
-        expect(res.results[0].messages[2].severity).toBe(2);
-    });
-});
+    describe("invalid file", () => {
+
+        beforeAll(async () => {
+            res = await linter.lintFiles(invalidFiles)
+        })
+        it("has errors", () => {
+            expect(res[0].errorCount).toBeTruthy()
+        })
+        it("has error for rule \"array-callback-return\"", () => {
+            expect(res[0].messages[0].ruleId).toBe("array-callback-return")
+            expect(res[0].messages[0].severity).toBe(2)
+        })
+    })
+})
+
+describe("With rule \"constructor-super\"", () => {
+
+    const validFiles = [ "./spec/fixtures/constructor-super/valid.js" ]
+    const invalidFiles = [ "./spec/fixtures/constructor-super/invalid.js" ]
+
+    let res
+
+    describe("valid file", () => {
+
+        beforeAll(async () => {
+            res = await linter.lintFiles(validFiles)
+        })
+        it("has no errors", () => {
+            expect(res[0].errorCount).toBeFalsy()
+        })
+        it("has no warnings", () => {
+            expect(res[0].warningCount).toBeFalsy()
+        })
+    })
+
+    describe("invalid file", () => {
+
+        beforeAll(async () => {
+            res = await linter.lintFiles(invalidFiles)
+        })
+        it("has errors", () => {
+            expect(res[0].errorCount).toBeTruthy()
+        })
+        it("has error for rule \"constructor-super\"", () => {
+            expect(res[0].messages[0].ruleId).toBe("constructor-super")
+            expect(res[0].messages[0].severity).toBe(2)
+        })
+    })
+})

@@ -1,32 +1,29 @@
 {
     "name": "@dopustim/eslint-config",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Configuration file for ESLint",
-    "keywords": [
-        "configuration",
-        "config",
-        "json",
-        "validate",
-        "lint",
-        "linter",
-        "eslint"
-    ],
+    "keywords": [ "dopustim", "eslint", "config", "validate", "lint", "linter" ],
     "author": "DopustimVladimir",
     "license": "ISC",
     "repository": "https://github.com/dopustim/eslint-config",
     "main": "index.js",
     "scripts": {
-        "test": "jasmine spec/index-spec.js"
+        "test": "jasmine spec/*-spec.js"
     },
     "devDependencies": {
-        "eslint": "^5.9.0",
-        "jasmine": "^3.3.0"
+        "jasmine": "^3.10.0",
+        "eslint": "^8.4.1"
     },
     "eslintConfig": {
-        "extends": "./index.js",
+        "extends": "@dopustim/eslint-config",
         "env": {
-            "node": true,
-            "jasmine": true
+            "jasmine": true,
+            "es2020": true,
+            "node": true
+        },
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaVersion": 2020
         }
     }
 }
