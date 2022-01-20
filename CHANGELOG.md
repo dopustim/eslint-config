@@ -1,3 +1,8 @@
+## [1.1.0] - 2021-01-20
+
+- Update dependencies
+- Update tests
+
 ## [1.0.0] - 2021-12-14
 
 - Update configuration

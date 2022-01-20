@@ -1,6 +1,6 @@
 {
     "name": "@dopustim/eslint-config",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Configuration file for ESLint",
     "keywords": [ "dopustim", "eslint", "config", "validate", "lint", "linter" ],
     "author": "DopustimVladimir",
