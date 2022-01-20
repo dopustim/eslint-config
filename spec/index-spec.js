@@ -1,5 +1,6 @@
 const eslint = require("eslint")
 const config = require("../")
+const fs = require("fs")
 
 const linter = new eslint.ESLint({
     useEslintrc: false,
@@ -10,72 +11,59 @@ const linter = new eslint.ESLint({
     }
 })
 
-describe("With rule \"array-callback-return\"", () => {
+for (const ruleName in config.rules) {
 
-    const validFiles = [ "./spec/fixtures/array-callback-return/valid.js" ]
-    const invalidFiles = [ "./spec/fixtures/array-callback-return/invalid.js" ]
+    if (!fs.existsSync(`./spec/fixtures/${ruleName}`) ||
+        !fs.lstatSync(`./spec/fixtures/${ruleName}`).isDirectory())
+        continue
 
-    let res
+    describe(`With rule "${ruleName}"`, () => {
 
-    describe("valid file", () => {
+        const validFiles = [ `./spec/fixtures/${ruleName}/valid.js` ]
+        const invalidFiles = [ `./spec/fixtures/${ruleName}/invalid.js` ]
 
-        beforeAll(async () => {
-            res = await linter.lintFiles(validFiles)
+        let res
+
+        describe("valid file", () => {
+
+            beforeAll(async () => {
+                res = await linter.lintFiles(validFiles)
+            })
+            it("has no errors", () => {
+                expect(res[0].errorCount).toBeFalsy()
+            })
+            it("has no warnings", () => {
+                expect(res[0].warningCount).toBeFalsy()
+            })
         })
-        it("has no errors", () => {
-            expect(res[0].errorCount).toBeFalsy()
-        })
-        it("has no warnings", () => {
-            expect(res[0].warningCount).toBeFalsy()
-        })
-    })
 
-    describe("invalid file", () => {
+        describe("invalid file", () => {
 
-        beforeAll(async () => {
-            res = await linter.lintFiles(invalidFiles)
-        })
-        it("has errors", () => {
-            expect(res[0].errorCount).toBeTruthy()
-        })
-        it("has error for rule \"array-callback-return\"", () => {
-            expect(res[0].messages[0].ruleId).toBe("array-callback-return")
-            expect(res[0].messages[0].severity).toBe(2)
-        })
-    })
-})
-
-describe("With rule \"constructor-super\"", () => {
-
-    const validFiles = [ "./spec/fixtures/constructor-super/valid.js" ]
-    const invalidFiles = [ "./spec/fixtures/constructor-super/invalid.js" ]
-
-    let res
-
-    describe("valid file", () => {
-
-        beforeAll(async () => {
-            res = await linter.lintFiles(validFiles)
-        })
-        it("has no errors", () => {
-            expect(res[0].errorCount).toBeFalsy()
-        })
-        it("has no warnings", () => {
-            expect(res[0].warningCount).toBeFalsy()
-        })
-    })
-
-    describe("invalid file", () => {
-
-        beforeAll(async () => {
-            res = await linter.lintFiles(invalidFiles)
-        })
-        it("has errors", () => {
-            expect(res[0].errorCount).toBeTruthy()
-        })
-        it("has error for rule \"constructor-super\"", () => {
-            expect(res[0].messages[0].ruleId).toBe("constructor-super")
-            expect(res[0].messages[0].severity).toBe(2)
+            beforeAll(async () => {
+                res = await linter.lintFiles(invalidFiles)
+            })
+            switch (config.rules[ruleName][0]) {
+                case 1:
+                    // Warnings
+                    it("has warnings", () => {
+                        expect(res[0].warningCount).toBeTruthy()
+                    })
+                    it(`has warning for rule "${ruleName}"`, () => {
+                        expect(res[0].messages[0].ruleId).toBe(ruleName)
+                        expect(res[0].messages[0].severity).toBe(1)
+                    })
+                    break
+                case 2:
+                    // Errors
+                    it("has errors", () => {
+                        expect(res[0].errorCount).toBeTruthy()
+                    })
+                    it(`has error for rule "${ruleName}"`, () => {
+                        expect(res[0].messages[0].ruleId).toBe(ruleName)
+                        expect(res[0].messages[0].severity).toBe(2)
+                    })
+                    break
+            }
         })
     })
-})
+}
