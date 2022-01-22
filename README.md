@@ -1,7 +1,7 @@
 
-# @dopustim/eslint-config
+# ESLint Configuration
 
-Configuration file for ESLint
+Configuration for ESLint
 
 [![NPM](https://img.shields.io/npm/dt/@dopustim/eslint-config?style=flat-square)](https://www.npmjs.com/package/@dopustim/eslint-config)
 
@@ -14,7 +14,7 @@ Configuration file for ESLint
 
 ## Usage
 
-Install `@dopustim/eslint-config` package via [NPM](https://www.npmjs.com/package/@dopustim/eslint-config):
+Install `eslint` and `@dopustim/eslint-config` packages via [NPM](https://www.npmjs.com):
 
 ```sh
 npm install -D eslint @dopustim/eslint-config
